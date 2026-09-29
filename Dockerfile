@@ -10,6 +10,9 @@ FROM python:3.12-slim
 
 ENV PATH="/opt/venv/bin:$PATH"
 
+ARG GIT_SHA=dev
+ENV GIT_SHA=$GIT_SHA
+
 RUN useradd --create-home appuser
 WORKDIR /app
 
