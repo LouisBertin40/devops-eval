@@ -23,4 +23,4 @@ EXPOSE 5000
 HEALTHCHECK --interval=10s --timeout=3s --retries=3 \
     CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/health', timeout=2)"
 
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5001", "app:app"]
