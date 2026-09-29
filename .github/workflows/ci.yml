@@ -50,3 +50,33 @@ jobs:
         with:
           name: rapports-py${{ matrix.python-version }}
           path: reports/
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Récupérer les rapports de tests
+        uses: actions/download-artifact@v4
+        with:
+          pattern: rapports-*
+          path: reports/
+      - name: Afficher les rapports récupérés
+        run: ls -R reports/
+      - name: Build de l'image Docker
+        run: docker build -t devops-eval:ci .
+
+  ci-ok:
+    needs: [lint, test, build]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Vérifier que tous les jobs ont réussi
+        if: >-
+          contains(needs.*.result, 'failure') ||
+          contains(needs.*.result, 'cancelled') ||
+          contains(needs.*.result, 'skipped')
+        run: exit 1
+      - run: echo "Tous les jobs sont verts"
