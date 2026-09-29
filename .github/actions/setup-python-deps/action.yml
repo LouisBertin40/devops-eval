@@ -1,0 +1,19 @@
+name: Setup Python et dépendances
+description: Installe Python, active le cache pip et installe les dépendances de dev
+
+inputs:
+  python-version:
+    description: Version de Python à installer
+    default: "3.12"
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-python@v5
+      with:
+        python-version: ${{ inputs.python-version }}
+        cache: pip
+        cache-dependency-path: requirements*.txt
+    - name: Installer les dépendances
+      shell: bash
+      run: pip install -r requirements-dev.txt
