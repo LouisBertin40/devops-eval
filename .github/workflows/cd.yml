@@ -67,6 +67,7 @@ jobs:
     env:
       COMPOSE_PROJECT_NAME: devops-eval-prod
       WEB_PORT: "8080"
+      PROMETHEUS_PORT: "9091"
     defaults:
       run:
         shell: pwsh

@@ -20,5 +20,14 @@ services:
       timeout: 3s
       retries: 5
 
+  prometheus:
+    image: prom/prometheus:v3.5.0
+    ports:
+      - "${PROMETHEUS_PORT:-9090}:9090"
+    volumes:
+      - ./monitoring:/etc/prometheus:ro
+    depends_on:
+      - web
+
 volumes:
   redis-data:

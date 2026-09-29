@@ -1,0 +1,21 @@
+groups:
+  - name: devops-eval
+    rules:
+      - alert: TauxErreurs5xxEleve
+        expr: |
+          sum(rate(http_requests_total{code=~"5.."}[1m]))
+            / sum(rate(http_requests_total[1m])) > 0.05
+        for: 2m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Plus de 5 % de réponses 5xx sur la dernière minute"
+
+      - alert: LatenceP95Degradee
+        expr: |
+          histogram_quantile(0.95, sum by (le) (rate(http_request_duration_seconds_bucket[5m]))) > 0.5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Latence p95 supérieure à 500 ms depuis 5 minutes"
