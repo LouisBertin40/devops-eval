@@ -1,8 +1,9 @@
 services:
   web:
     build: .
+    image: ghcr.io/louisbertin40/devops-eval:${IMAGE_TAG:-latest}
     ports:
-      - "5000:5000"
+      - "${WEB_PORT:-5000}:5000"
     environment:
       REDIS_HOST: redis
     depends_on:
